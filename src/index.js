@@ -13,6 +13,7 @@ class Apigen {
   createEndpoint(args) {
     let apiFn = (opts, cb) => {
       let {method, path, body, url, attach, statusCodes, ...otherOpts} = args(opts);
+
       let _method = method.toLowerCase();
       let action = (_method === 'get') ? 'query' : 'send';
       let _url = url || `${url || this.__host}${path}`;
