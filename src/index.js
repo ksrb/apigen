@@ -18,11 +18,12 @@ class Apigen {
   createEndpoint(args) {
     let apiFn = (opts, cb) => {
       let {method, path, body, url, attach, statusCodes, ...otherOpts} = args(opts);
-      let action = (method === 'get') ? 'query' : 'send';
+      let _method = method.toLowerCase();
+      let action = (_method === 'get') ? 'query' : 'send';
       let _url = url || `${url || this.__host}${path}`;
-      let req = request[method](_url);
+      let req = request[_method](_url);
 
-      this.__debug('APIGEN[REQUEST]', {...args(opts)});
+      this._debug('APIGEN[REQUEST]', {...args(opts)});
 
       if (attach) {
         attach.forEach(itm => {
@@ -33,7 +34,7 @@ class Apigen {
 
       req[action]({...body})
         .end((res) => {
-          this.__debug('APIGEN[RESPONSE]:', res);
+          this._debug('APIGEN[RESPONSE]:', res);
           let status = statusCodes[res.status] || statusCodes.default;
           let err = (!res.ok) ? new Error(status) : null;
           let _body = res.body || res.text;
