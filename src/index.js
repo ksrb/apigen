@@ -30,13 +30,20 @@ class Apigen {
 
       req[action]({...body})
         .end((err, res) => {
-          this._debug('APIGEN[RESPONSE]:', res);
+
           let status = statusCodes[res.status] || statusCodes.default;
-          if (!res.ok) {
-            err = err || new Error(status);
-          }
           let _body = res.body || res.text;
-          cb(err, _body);
+          res.statusDescription = status;
+
+          this._debug('APIGEN[RESPONSE]:', res);
+
+          if (err) {
+            this._debug('APIGEN[ERROR]:', err);
+          }
+
+          let _err = (!res.ok) ? new Error(status) : null;
+
+          cb(_err, _body, res);
         });
     };
 
