@@ -15,6 +15,10 @@ class Apigen {
       let {method, path, body, url, attach, statusCodes, ...otherOpts} = args(opts);
 
       let _method = method.toLowerCase();
+      if (_method === 'delete'){
+        _method = 'del';
+      }
+
       let action = (_method === 'get') ? 'query' : 'send';
       let _url = url || `${url || this.__host}${path}`;
       let req = request[_method](_url);
