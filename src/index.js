@@ -1,18 +1,13 @@
 'use strict';
 
 import request from 'superagent';
-import debug from 'debug';
+import Debug from 'debug';
 
 class Apigen {
   constructor(props) {
     props = props || {};
     this.__host = props.host;
-    this.debug = false;
-  }
-
-  _debug(...args) {
-    if (!this.debug) { return; }
-    debug(...args);
+    this._debug = Debug(`apigen:${props.name || props.host}`);
   }
 
   createEndpoint(args) {
