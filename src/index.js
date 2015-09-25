@@ -29,10 +29,12 @@ class Apigen {
       }
 
       req[action]({...body})
-        .end((res) => {
+        .end((err, res) => {
           this._debug('APIGEN[RESPONSE]:', res);
           let status = statusCodes[res.status] || statusCodes.default;
-          let err = (!res.ok) ? new Error(status) : null;
+          if (!res.ok) {
+            err = err || new Error(status);
+          }
           let _body = res.body || res.text;
           cb(err, _body);
         });
